@@ -1,0 +1,48 @@
+.image-so-image-wrap {
+    position: relative;
+}
+
+.image-so-overlay {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.4);
+    color: #e6e6e6;
+    padding: 0 10px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.image-so-overlay a {
+    color: #e6e6e6;
+    display: inline;
+    text-decoration: underline;
+    text-decoration-style: solid;
+}
+
+.image-so-overlay a:hover {
+    text-decoration-style: dotted;
+}
+
+.image-so-overlay:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.image-so-bottom-left {
+    bottom: 8px;
+    left: 8px;
+}
+
+.image-so-top-left {
+    top: 8px;
+    left: 8px;
+}
+
+.image-so-top-right {
+    top: 8px;
+    right: 8px;
+}
+
+.image-so-bottom-right {
+    bottom: 8px;
+    right: 8px;
+}
