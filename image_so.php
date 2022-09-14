@@ -10,8 +10,9 @@
  * License: GPLv3
  */
 
-define( 'IMAGE_SO__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'IMAGE_SO__BASE', plugin_basename( __FILE__ ) );
+define('IMAGE_SO__PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('IMAGE_SO__BASE', plugin_basename(__FILE__));
+define('IMAGE_SO__PLUGIN_URL', plugins_url('',__FILE__));
 
 register_activation_hook( __FILE__, array('Image_SO\Inc\Core\Image_SO_Activator', 'activate'));
 

@@ -84,6 +84,6 @@ final class Image_SO_Init extends Image_SO_Base
      * @brief Adds CSS to front-end.
      */
     public function hook_css() {
-        wp_enqueue_style( 'image_so', '/wp-content/plugins/image_so/assets/overlay.css', false );
+        wp_enqueue_style( 'image_so', IMAGE_SO__PLUGIN_URL . '/assets/overlay.css', false );
     }
 }
