@@ -82,6 +82,12 @@ final class Image_SO_Admin extends Image_SO_Base
         if(isset($_POST['image_so_admin_form_nonce']) && wp_verify_nonce($_POST['image_so_admin_form_nonce'], 'image_so_admin_form_nonce')) {
             $source_text = sanitize_text_field($_POST['image_so-source-text']);
             $position = sanitize_text_field($_POST['image_so-position']);
+            if (!$this->check_select($position, array('top-left', 'top-right', 'bottom-left', 'bottom-right'))) {
+                wp_die(__( 'Invalid option', 'image_so'), __('Error'), array(
+                    'response' 	=> 403,
+                    'back_link' => 'admin.php?page=image_so',
+                ));
+            }
             $only_post = sanitize_text_field($_POST['image_so-only-post']);
             if (!$this->check_select($only_post, array('0', '1'))) {
                 wp_die(__( 'Invalid option', 'image_so'), __('Error'), array(
