@@ -32,18 +32,18 @@ final class Image_SO_Init extends Image_SO_Base
         global $post;
         if ($this->only_post || is_singular()) {
             $doc = new DOMDocument();
-            libxml_use_internal_errors(true);
             if (empty($content)) {
                 return $content;
             }
+            libxml_use_internal_errors(true);
             $doc->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
             libxml_use_internal_errors(false);
             $tags = $doc->getElementsByTagName('img');
             foreach ($tags as $tag) {
-                $id = attachment_url_to_postid($tag->getAttribute('src'));
+                $id = attachment_url_to_postid(sanitize_url($tag->getAttribute('src')));
                 if ($id === 0) {
                     $src = preg_replace('/-[0-9]{3,4}x[0-9]{3,4}(\.[a-zA-Z]{3,4})$/', '$1', $tag->getAttribute('src'));
-                    $id = attachment_url_to_postid($src);
+                    $id = attachment_url_to_postid(sanitize_url($src));
                 }
                 if ($id !== 0) {
                     if (!empty($source = get_post_meta($id, 'image_so_source_name', true))) {
@@ -51,31 +51,22 @@ final class Image_SO_Init extends Image_SO_Base
                         $wrap->setAttribute('class', 'image-so-image-wrap');
                         $overlay = $doc->createElement('div');
                         $position = $this->position;
-                        if (!empty(
-                            $custom_position = get_post_meta(
-                                $id,
-                                'image_so_source_position',
-                                true
-                            )
-                            ) && $custom_position !== 'default') {
+                        if (!empty($custom_position = get_post_meta($id, 'image_so_source_position', true)) && $custom_position !== 'default') {
                             $position = $custom_position;
                         }
                         $source_text = $this->source_text;
                         $source = htmlspecialchars($source);
-                        $overlay->textContent = (!empty($source_text) ? $source_text : (__(
-                                    'Source',
-                                    $this->plugin_name
-                                ) . ':')) . ' ';
+                        $overlay->textContent = (!empty($source_text) ? $source_text : (__('Source', $this->plugin_name) . ':')) . ' ';
                         if (!empty($source_url = get_post_meta($id, 'image_so_source_url', true))) {
                             $url = $doc->createElement('a');
-                            $url->setAttribute('href', htmlspecialchars($source_url));
+                            $url->setAttribute('href', esc_url($source_url));
                             $url->setAttribute('target', '_blank');
-                            $url->textContent = $source;
+                            $url->textContent = esc_html($source);
                             $overlay->appendChild($url);
                         } else {
-                            $overlay->textContent = $overlay->textContent . $source;
+                            $overlay->textContent = esc_html($overlay->textContent . $source);
                         }
-                        $overlay->setAttribute('class', 'image-so-overlay image-so-' . $position);
+                        $overlay->setAttribute('class', esc_attr('image-so-overlay image-so-' . $position));
                         $parent = $tag->parentNode;
                         $parent->removeChild($tag);
                         $wrap->appendChild($tag);

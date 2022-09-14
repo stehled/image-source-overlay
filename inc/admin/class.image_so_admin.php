@@ -69,8 +69,8 @@ final class Image_SO_Admin extends Image_SO_Base
             if($_REQUEST['image_so_admin_notice'] === "success") {
                 $html =	'<div class="notice notice-success is-dismissible"> 
 							<p><strong>' . __('Success', $this->plugin_name) . ' </strong>';
-                $html .= htmlspecialchars(print_r($_REQUEST['image_so_response'], true)) . '</p></div>';
-                echo $html;
+                $html .= sanitize_text_field(print_r($_REQUEST['image_so_response'], true)) . '</p></div>';
+                echo wp_kses_post($html);
             }
         }
     }
@@ -83,6 +83,12 @@ final class Image_SO_Admin extends Image_SO_Base
             $source_text = sanitize_text_field($_POST['image_so-source-text']);
             $position = sanitize_text_field($_POST['image_so-position']);
             $only_post = sanitize_text_field($_POST['image_so-only-post']);
+            if (!$this->check_select($only_post, array('0', '1'))) {
+                wp_die(__( 'Invalid option', $this->plugin_name), __('Error', $this->plugin_name), array(
+                    'response' 	=> 403,
+                    'back_link' => 'admin.php?page=image_so',
+                ));
+            }
             $this->update_option_value('source_text', $source_text);
             $this->update_option_value('position', $position);
             $this->update_option_value('only_post', $only_post);
@@ -93,7 +99,7 @@ final class Image_SO_Admin extends Image_SO_Base
         else {
             wp_die(__( 'Invalid nonce specified', $this->plugin_name), __('Error', $this->plugin_name), array(
                 'response' 	=> 403,
-                'back_link' => 'admin.php?page=cookierow',
+                'back_link' => 'admin.php?page=image_so',
             ));
         }
     }
@@ -108,7 +114,7 @@ final class Image_SO_Admin extends Image_SO_Base
         $field_value = get_post_meta($post->ID, 'image_so_source_name', true);
 
         $form_fields['image_so_source_name'] = array(
-            'value' => $field_value ? $field_value : '',
+            'value' => $field_value ? esc_attr($field_value) : '',
             'label' => __('Source name', $this->plugin_name),
             'helps' => __('Include the source name', $this->plugin_name),
             'input'  => 'text'
@@ -117,7 +123,7 @@ final class Image_SO_Admin extends Image_SO_Base
         $field_value = get_post_meta($post->ID, 'image_so_source_url', true);
 
         $form_fields['image_so_source_url'] = array(
-            'value' => $field_value ? $field_value : '',
+            'value' => $field_value ? esc_attr($field_value) : '',
             'label' => __('Source URL', $this->plugin_name),
             'helps' => __('URL to link the source to', $this->plugin_name),
             'input'  => 'url'
@@ -125,17 +131,16 @@ final class Image_SO_Admin extends Image_SO_Base
 
         $field_value = get_post_meta($post->ID, 'image_so_source_position', true);
         $form_fields['image_so_source_position'] = array(
-            'value' => $field_value ? $field_value : '',
             'label' => __('Source position', $this->plugin_name),
             'helps' => __('Where the source will be positioned', $this->plugin_name),
             'input' => 'html'
         );
         $form_fields['image_so_source_position']['html'] = "<select name='attachments[{$post->ID}][image_so_source_position]'>";
-        $form_fields['image_so_source_position']['html'] .= '<option '.selected(get_post_meta($post->ID, "image_so_source_position", true), 'default',false).' value="default">' . __('Default', $this->plugin_name) . '</option>';
-        $form_fields['image_so_source_position']['html'] .= '<option '.selected(get_post_meta($post->ID, "image_so_source_position", true), 'top-left',false).' value="top-left">' . __('Top left', $this->plugin_name) . '</option>';
-        $form_fields['image_so_source_position']['html'] .= '<option '.selected(get_post_meta($post->ID, "image_so_source_position", true), 'top-right',false).' value="top-right">' . __('Top right', $this->plugin_name) . '</option>';
-        $form_fields['image_so_source_position']['html'] .= '<option '.selected(get_post_meta($post->ID, "image_so_source_position", true), 'bottom-left',false).' value="bottom-left">' . __('Bottom left', $this->plugin_name) . '</option>';
-        $form_fields['image_so_source_position']['html'] .= '<option '.selected(get_post_meta($post->ID, "image_so_source_position", true), 'bottom-right',false).' value="bottom-right">' . __('Bottom right', $this->plugin_name) . '</option>';
+        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'default',false).' value="default">' . __('Default', $this->plugin_name) . '</option>';
+        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'top-left',false).' value="top-left">' . __('Top left', $this->plugin_name) . '</option>';
+        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'top-right',false).' value="top-right">' . __('Top right', $this->plugin_name) . '</option>';
+        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'bottom-left',false).' value="bottom-left">' . __('Bottom left', $this->plugin_name) . '</option>';
+        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'bottom-right',false).' value="bottom-right">' . __('Bottom right', $this->plugin_name) . '</option>';
         $form_fields['image_so_source_position']['html'] .= '</select>';
 
         return $form_fields;
@@ -147,15 +152,21 @@ final class Image_SO_Admin extends Image_SO_Base
      */
     function custom_media_save_attachment($attachment_id) {
         if (isset($_REQUEST['attachments'][$attachment_id]['image_so_source_name'])) {
-            $image_so_source_name = $_REQUEST['attachments'][$attachment_id]['image_so_source_name'];
+            $image_so_source_name = sanitize_text_field($_REQUEST['attachments'][$attachment_id]['image_so_source_name']);
             update_post_meta($attachment_id, 'image_so_source_name', $image_so_source_name);
         }
         if (isset($_REQUEST['attachments'][$attachment_id]['image_so_source_url'])) {
-            $image_so_source_url = $_REQUEST['attachments'][$attachment_id]['image_so_source_url'];
+            $image_so_source_url = sanitize_url($_REQUEST['attachments'][$attachment_id]['image_so_source_url']);
             update_post_meta($attachment_id, 'image_so_source_url', $image_so_source_url);
         }
         if (isset($_REQUEST['attachments'][$attachment_id]['image_so_source_position'])) {
             $image_so_source_position = sanitize_text_field($_REQUEST['attachments'][$attachment_id]['image_so_source_position']);
+            if (!$this->check_select($image_so_source_position, array('default', 'top-left', 'top-right', 'bottom-left', 'bottom-right'))) {
+                wp_die(__( 'Invalid option', $this->plugin_name), __('Error', $this->plugin_name), array(
+                    'response' 	=> 403,
+                    'back_link' => 'admin.php?page=image_so',
+                ));
+            }
             update_post_meta($attachment_id, 'image_so_source_position', $image_so_source_position);
         }
     }
@@ -176,6 +187,6 @@ final class Image_SO_Admin extends Image_SO_Base
      */
     private function get_settings_link()
     {
-        return  '<a href="' . admin_url('admin.php?page=' . $this->plugin_name) . '">' . __('Settings', $this->plugin_name) . '</a>';
+        return  '<a href="' . esc_attr(admin_url('admin.php?page=' . $this->plugin_name)) . '">' . __('Settings', $this->plugin_name) . '</a>';
     }
 }

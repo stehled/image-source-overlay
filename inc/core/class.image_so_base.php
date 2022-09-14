@@ -51,4 +51,13 @@ abstract class Image_SO_Base
         update_option('image_so_' . $key, $value);
         $this->$key = $value;
     }
+
+    /**
+     * @brief Check if value is in specified options.
+     * @param $value
+     * @param $options
+     */
+    protected function check_select($value, $options) {
+        return in_array($value, $options, false);
+    }
 }
