@@ -39,5 +39,7 @@ This plugin adds a small overlay to images with the source and link.
 1. Media library custom fields
 
 == Changelog ==
+= 1.0.1 =
+* readme.txt - Small modifications, added usage section
 = 1.0.0 =
 * Initial version.
