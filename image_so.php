@@ -6,7 +6,7 @@
  * Description: Adds overlay with image sources.
  * Version: 1.0.0
  * Author: Eduard Stehlík
- * Author URI:
+ * Author URI: http://stehled.com
  * License: GPLv3
  */
 

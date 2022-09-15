@@ -18,12 +18,16 @@ image authors.
 
 This plugin adds a small overlay to images with the source and link.
 
-** Features **
+= Features =
 * Choose from 4 overlay positions. Top left, top right, bottom left, bottom right.
 * Add links or simply leave only source name.
 * Change overlay positions depending on image
 * Enable on all pages or only post pages.
 * Translate to your language with ease.
+
+== Screenshots ==
+1. Example of the source overlay
+1. Admin settings page
 
 == Changelog ==
 = 1.0.0 =
