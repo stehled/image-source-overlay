@@ -25,9 +25,18 @@ This plugin adds a small overlay to images with the source and link.
 * Enable on all pages or only post pages.
 * Translate to your language with ease.
 
+= Usage =
+1. Set default options in settings
+1. Navigate to media library
+1. Select image
+1. Scroll down to our custom fields with source name and source url
+1. Enter image source and optionaly url
+1. All set
+
 == Screenshots ==
 1. Example of the source overlay
 1. Admin settings page
+1. Media library custom fields
 
 == Changelog ==
 = 1.0.0 =
