@@ -14,7 +14,7 @@ namespace Image_SO\Inc\Core;
  */
 abstract class Image_SO_Base
 {
-    protected $plugin_name = 'image_so';
+    protected $plugin_name = 'image-source-overlay';
 
     protected $source_text = '';
 

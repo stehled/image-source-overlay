@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/donate/?hosted_button_id=D4CRBYJHGDUQY
 Tags: captions, copyright, images, source, credits
 Requires at least: 4.6
 Tested up to: 6.0.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 5.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -39,6 +39,9 @@ This plugin adds a small overlay to images with the source and link.
 1. Media library custom fields
 
 == Changelog ==
+= 1.0.2 =
+* Text domain changed to correspond to WP slug
+* Main PHP file name changed to correspond with WP slug
 = 1.0.1 =
 * readme.txt - Small modifications, added usage section
 = 1.0.0 =

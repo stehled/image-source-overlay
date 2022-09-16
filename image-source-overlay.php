@@ -4,7 +4,7 @@
  * Plugin URI:
  * Text Domain: image-source-overlay
  * Description: Adds overlay with image sources.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Eduard Stehlík
  * Author URI: http://stehled.com
  * License: GPLv3
