@@ -56,7 +56,7 @@ final class Image_SO_Init extends Image_SO_Base
                         }
                         $source_text = $this->source_text;
                         $source = htmlspecialchars($source);
-                        $overlay->textContent = (!empty($source_text) ? $source_text : (__('Source', 'image_so') . ':')) . ' ';
+                        $overlay->textContent = (!empty($source_text) ? $source_text : (__('Source', 'image-source-overlay') . ':')) . ' ';
                         if (!empty($source_url = get_post_meta($id, 'image_so_source_url', true))) {
                             $url = $doc->createElement('a');
                             $url->setAttribute('href', esc_url($source_url));

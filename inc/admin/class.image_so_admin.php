@@ -43,7 +43,7 @@ final class Image_SO_Admin extends Image_SO_Base
      * @brief Adds plugin admin page to Wordpress menu.
      */
     public function admin_menu() {
-        add_management_page(__('Image SO Settings', 'image_so'), __('Image SO Settings', 'image_so'), 'manage_options', 'image_so', array($this, 'admin_page'));
+        add_management_page(__('Image SO Settings', 'image-source-overlay'), __('Image SO Settings', 'image-source-overlay'), 'manage_options', 'image_so', array($this, 'admin_page'));
     }
 
     /**
@@ -56,7 +56,7 @@ final class Image_SO_Admin extends Image_SO_Base
         }
         else {
             ?>
-            <p> <?php __("You are not authorized to perform this operation.", 'image_so') ?> </p>
+            <p> <?php __("You are not authorized to perform this operation.", 'image-source-overlay') ?> </p>
             <?php
         }
     }
@@ -68,7 +68,7 @@ final class Image_SO_Admin extends Image_SO_Base
         if (isset($_REQUEST['image_so_admin_notice'])) {
             if($_REQUEST['image_so_admin_notice'] === "success") {
                 $html =	'<div class="notice notice-success is-dismissible"> 
-							<p><strong>' . __('Success') . ' </strong>';
+							<p><strong>' . __('Success', 'image-source-overlay') . ' </strong>';
                 $html .= sanitize_text_field(print_r($_REQUEST['image_so_response'], true)) . '</p></div>';
                 echo wp_kses_post($html);
             }
@@ -83,14 +83,14 @@ final class Image_SO_Admin extends Image_SO_Base
             $source_text = sanitize_text_field($_POST['image_so-source-text']);
             $position = sanitize_text_field($_POST['image_so-position']);
             if (!$this->check_select($position, array('top-left', 'top-right', 'bottom-left', 'bottom-right'))) {
-                wp_die(__( 'Invalid option', 'image_so'), __('Error'), array(
+                wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
                     'response' 	=> 403,
                     'back_link' => 'admin.php?page=image_so',
                 ));
             }
             $only_post = sanitize_text_field($_POST['image_so-only-post']);
             if (!$this->check_select($only_post, array('0', '1'))) {
-                wp_die(__( 'Invalid option', 'image_so'), __('Error'), array(
+                wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
                     'response' 	=> 403,
                     'back_link' => 'admin.php?page=image_so',
                 ));
@@ -99,11 +99,11 @@ final class Image_SO_Admin extends Image_SO_Base
             $this->update_option_value('position', $position);
             $this->update_option_value('only_post', $only_post);
             $admin_notice = "success";
-            $this->custom_redirect($admin_notice, 'image_so', __('settings were saved.', 'image_so'));
+            $this->custom_redirect($admin_notice, 'image_so', __('settings were saved.', 'image-source-overlay'));
             exit;
         }
         else {
-            wp_die(__( 'Invalid nonce specified', 'image_so'), __('Error'), array(
+            wp_die(__( 'Invalid nonce specified', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
                 'response' 	=> 403,
                 'back_link' => 'admin.php?page=image_so',
             ));
@@ -121,8 +121,8 @@ final class Image_SO_Admin extends Image_SO_Base
 
         $form_fields['image_so_source_name'] = array(
             'value' => $field_value ? esc_attr($field_value) : '',
-            'label' => __('Source name', 'image_so'),
-            'helps' => __('Include the source name', 'image_so'),
+            'label' => __('Source name', 'image-source-overlay'),
+            'helps' => __('Include the source name', 'image-source-overlay'),
             'input'  => 'text'
         );
 
@@ -130,23 +130,23 @@ final class Image_SO_Admin extends Image_SO_Base
 
         $form_fields['image_so_source_url'] = array(
             'value' => $field_value ? esc_attr($field_value) : '',
-            'label' => __('Source URL', 'image_so'),
-            'helps' => __('URL to link the source to', 'image_so'),
+            'label' => __('Source URL', 'image-source-overlay'),
+            'helps' => __('URL to link the source to', 'image-source-overlay'),
             'input'  => 'url'
         );
 
         $field_value = get_post_meta($post->ID, 'image_so_source_position', true);
         $form_fields['image_so_source_position'] = array(
-            'label' => __('Source position', 'image_so'),
-            'helps' => __('Where the source will be positioned', 'image_so'),
+            'label' => __('Source position', 'image-source-overlay'),
+            'helps' => __('Where the source will be positioned', 'image-source-overlay'),
             'input' => 'html'
         );
         $form_fields['image_so_source_position']['html'] = "<select name='attachments[{$post->ID}][image_so_source_position]'>";
-        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'default',false).' value="default">' . __('Default', 'image_so') . '</option>';
-        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'top-left',false).' value="top-left">' . __('Top left', 'image_so') . '</option>';
-        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'top-right',false).' value="top-right">' . __('Top right', 'image_so') . '</option>';
-        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'bottom-left',false).' value="bottom-left">' . __('Bottom left', 'image_so') . '</option>';
-        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'bottom-right',false).' value="bottom-right">' . __('Bottom right', 'image_so') . '</option>';
+        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'default',false).' value="default">' . __('Default', 'image-source-overlay') . '</option>';
+        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'top-left',false).' value="top-left">' . __('Top left', 'image-source-overlay') . '</option>';
+        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'top-right',false).' value="top-right">' . __('Top right', 'image-source-overlay') . '</option>';
+        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'bottom-left',false).' value="bottom-left">' . __('Bottom left', 'image-source-overlay') . '</option>';
+        $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'bottom-right',false).' value="bottom-right">' . __('Bottom right', 'image-source-overlay') . '</option>';
         $form_fields['image_so_source_position']['html'] .= '</select>';
 
         return $form_fields;
@@ -168,7 +168,7 @@ final class Image_SO_Admin extends Image_SO_Base
         if (isset($_REQUEST['attachments'][$attachment_id]['image_so_source_position'])) {
             $image_so_source_position = sanitize_text_field($_REQUEST['attachments'][$attachment_id]['image_so_source_position']);
             if (!$this->check_select($image_so_source_position, array('default', 'top-left', 'top-right', 'bottom-left', 'bottom-right'))) {
-                wp_die(__( 'Invalid option', 'image_so'), __('Error'), array(
+                wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
                     'response' 	=> 403,
                     'back_link' => 'admin.php?page=image_so',
                 ));
@@ -193,6 +193,6 @@ final class Image_SO_Admin extends Image_SO_Base
      */
     private function get_settings_link()
     {
-        return  '<a href="' . esc_url(admin_url('admin.php?page=image_so')) . '">' . __('Settings') . '</a>';
+        return  '<a href="' . esc_url(admin_url('admin.php?page=image_so')) . '">' . __('Settings', 'image-source-overlay') . '</a>';
     }
 }
