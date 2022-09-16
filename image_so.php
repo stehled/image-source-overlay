@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Image Source Overlay
  * Plugin URI:
- * Text Domain: image_so
+ * Text Domain: image-source-overlay
  * Description: Adds overlay with image sources.
  * Version: 1.0.1
  * Author: Eduard Stehlík
