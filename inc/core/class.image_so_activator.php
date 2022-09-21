@@ -27,5 +27,7 @@ class Image_SO_Activator
         add_option('image_so_position', 'top-left');
         add_option('image_so_source_text', '');
         add_option('image_so_only_post', '0');
+        add_option('image_so_nofollow', 'nofollow');
+        add_option('image_so_version_number', IMAGE_SO__VERSION_NUMBER);
     }
 }

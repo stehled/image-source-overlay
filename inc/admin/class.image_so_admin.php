@@ -52,7 +52,7 @@ final class Image_SO_Admin extends Image_SO_Base
     public function admin_page(){
         if(current_user_can( 'manage_options')) {
             $image_so_admin_form_nonce = wp_create_nonce( 'image_so_admin_form_nonce');
-            self::view('admin_page', array('image_so_admin_form_nonce' => $image_so_admin_form_nonce, 'position' => $this->position, 'source_text' => $this->source_text, 'only_post' => $this->only_post));
+            self::view('admin_page', array('image_so_admin_form_nonce' => $image_so_admin_form_nonce, 'position' => $this->position, 'source_text' => $this->source_text, 'only_post' => $this->only_post, 'nofollow' => $this->nofollow));
         }
         else {
             ?>
@@ -95,9 +95,17 @@ final class Image_SO_Admin extends Image_SO_Base
                     'back_link' => 'admin.php?page=image_so',
                 ));
             }
+            $nofollow = sanitize_text_field($_POST['image_so-nofollow']);
+            if (!$this->check_select($nofollow, $this->nofollow_select)) {
+                wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
+                    'response' 	=> 403,
+                    'back_link' => 'admin.php?page=image_so',
+                ));
+            }
             $this->update_option_value('source_text', $source_text);
             $this->update_option_value('position', $position);
             $this->update_option_value('only_post', $only_post);
+            $this->update_option_value('nofollow', $nofollow);
             $admin_notice = "success";
             $this->custom_redirect($admin_notice, 'image_so', __('settings were saved.', 'image-source-overlay'));
             exit;
@@ -149,6 +157,18 @@ final class Image_SO_Admin extends Image_SO_Base
         $form_fields['image_so_source_position']['html'] .= '<option '.selected($field_value, 'bottom-right',false).' value="bottom-right">' . __('Bottom right', 'image-source-overlay') . '</option>';
         $form_fields['image_so_source_position']['html'] .= '</select>';
 
+        $field_value = get_post_meta($post->ID, 'image_so_nofollow', true);
+        $form_fields['image_so_nofollow'] = array(
+            'label' => __('Link setting', 'image-source-overlay'),
+            'helps' => __('If link should be dofollow or nofollow', 'image-source-overlay'),
+            'input' => 'html'
+        );
+        $form_fields['image_so_nofollow']['html'] = "<select name='attachments[{$post->ID}][image_so_nofollow]'>";
+        $form_fields['image_so_nofollow']['html'] .= '<option '.selected($field_value, 'default',false).' value="default">' . __('Default', 'image-source-overlay') . '</option>';
+        $form_fields['image_so_nofollow']['html'] .= '<option '.selected($field_value, 'nofollow',false).' value="nofollow">' . __('Nofollow', 'image-source-overlay') . '</option>';
+        $form_fields['image_so_nofollow']['html'] .= '<option '.selected($field_value, 'dofollow',false).' value="dofollow">' . __('Dofollow', 'image-source-overlay') . '</option>';
+        $form_fields['image_so_nofollow']['html'] .= '</select>';
+
         return $form_fields;
     }
 
@@ -175,6 +195,16 @@ final class Image_SO_Admin extends Image_SO_Base
             }
             update_post_meta($attachment_id, 'image_so_source_position', $image_so_source_position);
         }
+        if (isset($_REQUEST['attachments'][$attachment_id]['image_so_nofollow'])) {
+            $image_so_nofollow = sanitize_text_field($_REQUEST['attachments'][$attachment_id]['image_so_nofollow']);
+            if (!$this->check_select($image_so_nofollow, $this->select_default($this->nofollow_select))) {
+                wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
+                    'response' 	=> 403,
+                    'back_link' => 'admin.php?page=image_so',
+                ));
+            }
+            update_post_meta($attachment_id, 'image_so_nofollow', $image_so_nofollow);
+        }
     }
 
     /**
@@ -194,5 +224,15 @@ final class Image_SO_Admin extends Image_SO_Base
     private function get_settings_link()
     {
         return  '<a href="' . esc_url(admin_url('admin.php?page=image_so')) . '">' . __('Settings', 'image-source-overlay') . '</a>';
+    }
+
+    /**
+     * @brief Returns select options with default option appended.
+     * @param $options Array of select options
+     * @return array
+     */
+    private function select_default($options) {
+        $options[] = 'default';
+        return $options;
     }
 }
