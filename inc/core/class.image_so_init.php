@@ -12,12 +12,13 @@ use DOMDocument;
 /**
  * Class Image_SO_Init
  * @package Image_SO\Inc\Core
- * @brief Front-end class managing HTML manipulation.
+ * @brief Class managing HTML manipulation and checking for database update.
  */
 final class Image_SO_Init extends Image_SO_Base
 {
     public function __construct() {
         parent::__construct();
+        add_action('plugins_loaded', array($this, 'update_plugin'));
         add_filter('the_content', array($this, 'add_source_overlay'));
         add_filter('post_thumbnail_html', array($this, 'add_source_overlay'));
         add_action('wp_enqueue_scripts', array($this, 'hook_css'), 20);
@@ -28,7 +29,7 @@ final class Image_SO_Init extends Image_SO_Base
      * @param $content HTML to scan
      * @return string content HTML
      */
-    function add_source_overlay($content) {
+    public function add_source_overlay($content) {
         global $post;
         if ($this->only_post || is_singular()) {
             $doc = new DOMDocument();
@@ -58,9 +59,14 @@ final class Image_SO_Init extends Image_SO_Base
                         $source = htmlspecialchars($source);
                         $overlay->textContent = (!empty($source_text) ? $source_text : (__('Source', 'image-source-overlay') . ':')) . ' ';
                         if (!empty($source_url = get_post_meta($id, 'image_so_source_url', true))) {
+                            $nofollow = get_post_meta($id, 'image_so_nofollow', true);
+                            $nofollow = (!empty($nofollow) && $nofollow !== 'default') ? $nofollow : $this->nofollow;
                             $url = $doc->createElement('a');
                             $url->setAttribute('href', esc_url($source_url));
                             $url->setAttribute('target', '_blank');
+                            if ($nofollow === 'nofollow') {
+                                $url->setAttribute('rel', 'nofollow');
+                            }
                             $url->textContent = esc_html($source);
                             $overlay->appendChild($url);
                         } else {
@@ -85,5 +91,14 @@ final class Image_SO_Init extends Image_SO_Base
      */
     public function hook_css() {
         wp_enqueue_style( 'image_so', IMAGE_SO__PLUGIN_URL . '/assets/overlay.css', false );
+    }
+
+    /**
+     * @brief Check version number and update database.
+     */
+    public function update_plugin() {
+        if (IMAGE_SO__VERSION_NUMBER !== get_option('image_so_version_number')) {
+            new Image_SO_Updater();
+        }
     }
 }

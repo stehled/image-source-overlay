@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/donate/?hosted_button_id=D4CRBYJHGDUQY
 Tags: captions, copyright, images, source, credits
 Requires at least: 4.6
 Tested up to: 6.0.2
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 Requires PHP: 5.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -24,13 +24,14 @@ This plugin adds a small overlay to images with the source and link.
 * Change overlay positions depending on image
 * Enable on all pages or only post pages.
 * Translate to your language with ease.
+* Choose between dofollow and nofollow for links.
 
 = Usage =
 1. Set default options in settings
 1. Navigate to media library
 1. Select image
 1. Scroll down to our custom fields with source name and source url
-1. Enter image source and optionaly url
+1. Enter image source and optionally url
 1. All set
 
 == Screenshots ==
@@ -39,6 +40,9 @@ This plugin adds a small overlay to images with the source and link.
 1. Media library custom fields
 
 == Changelog ==
+= 1.1.0 =
+* Dofollow or Nofollow source links
+* Database updater
 = 1.0.2 =
 * Text domain changed to correspond to WP slug
 * Main PHP file name changed to correspond with WP slug

@@ -22,10 +22,17 @@ abstract class Image_SO_Base
 
     protected $only_post = '0';
 
+    protected $nofollow = 'nofollow';
+
+    protected $bool_select = array('0', '1');
+
+    protected $nofollow_select = array('dofollow', 'nofollow');
+
     public function __construct() {
         $this->source_text = get_option('image_so_source_text');
         $this->position = get_option('image_so_position');
         $this->only_post = get_option('image_so_only_post');
+        $this->nofollow = get_option('image_so_nofollow');
     }
 
     /**
