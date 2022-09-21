@@ -26,6 +26,8 @@ abstract class Image_SO_Base
 
     protected $bool_select = array('0', '1');
 
+    protected $position_select = array('top-left', 'top-right', 'bottom-left', 'bottom-right');
+
     protected $nofollow_select = array('dofollow', 'nofollow');
 
     public function __construct() {

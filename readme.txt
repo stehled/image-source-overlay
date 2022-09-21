@@ -43,6 +43,7 @@ This plugin adds a small overlay to images with the source and link.
 = 1.1.0 =
 * Dofollow or Nofollow source links
 * Database updater
+* Small code improvements
 = 1.0.2 =
 * Text domain changed to correspond to WP slug
 * Main PHP file name changed to correspond with WP slug
