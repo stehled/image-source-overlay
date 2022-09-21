@@ -82,25 +82,16 @@ final class Image_SO_Admin extends Image_SO_Base
         if(isset($_POST['image_so_admin_form_nonce']) && wp_verify_nonce($_POST['image_so_admin_form_nonce'], 'image_so_admin_form_nonce')) {
             $source_text = sanitize_text_field($_POST['image_so-source-text']);
             $position = sanitize_text_field($_POST['image_so-position']);
-            if (!$this->check_select($position, array('top-left', 'top-right', 'bottom-left', 'bottom-right'))) {
-                wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
-                    'response' 	=> 403,
-                    'back_link' => 'admin.php?page=image_so',
-                ));
+            if (!$this->check_select($position, $this->position_select)) {
+                $this->invalid_option();
             }
             $only_post = sanitize_text_field($_POST['image_so-only-post']);
-            if (!$this->check_select($only_post, array('0', '1'))) {
-                wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
-                    'response' 	=> 403,
-                    'back_link' => 'admin.php?page=image_so',
-                ));
+            if (!$this->check_select($only_post, $this->bool_select)) {
+                $this->invalid_option();
             }
             $nofollow = sanitize_text_field($_POST['image_so-nofollow']);
             if (!$this->check_select($nofollow, $this->nofollow_select)) {
-                wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
-                    'response' 	=> 403,
-                    'back_link' => 'admin.php?page=image_so',
-                ));
+                $this->invalid_option();
             }
             $this->update_option_value('source_text', $source_text);
             $this->update_option_value('position', $position);
@@ -187,21 +178,15 @@ final class Image_SO_Admin extends Image_SO_Base
         }
         if (isset($_REQUEST['attachments'][$attachment_id]['image_so_source_position'])) {
             $image_so_source_position = sanitize_text_field($_REQUEST['attachments'][$attachment_id]['image_so_source_position']);
-            if (!$this->check_select($image_so_source_position, array('default', 'top-left', 'top-right', 'bottom-left', 'bottom-right'))) {
-                wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
-                    'response' 	=> 403,
-                    'back_link' => 'admin.php?page=image_so',
-                ));
+            if (!$this->check_select($image_so_source_position, $this->select_default($this->position_select))) {
+                $this->invalid_option();
             }
             update_post_meta($attachment_id, 'image_so_source_position', $image_so_source_position);
         }
         if (isset($_REQUEST['attachments'][$attachment_id]['image_so_nofollow'])) {
             $image_so_nofollow = sanitize_text_field($_REQUEST['attachments'][$attachment_id]['image_so_nofollow']);
             if (!$this->check_select($image_so_nofollow, $this->select_default($this->nofollow_select))) {
-                wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
-                    'response' 	=> 403,
-                    'back_link' => 'admin.php?page=image_so',
-                ));
+                $this->invalid_option();
             }
             update_post_meta($attachment_id, 'image_so_nofollow', $image_so_nofollow);
         }
@@ -234,5 +219,15 @@ final class Image_SO_Admin extends Image_SO_Base
     private function select_default($options) {
         $options[] = 'default';
         return $options;
+    }
+
+    /**
+     * @brief Sends 403 with invalid option error.
+     */
+    private function invalid_option() {
+        wp_die(__( 'Invalid option', 'image-source-overlay'), __('Error', 'image-source-overlay'), array(
+            'response' 	=> 403,
+            'back_link' => 'admin.php?page=image_so',
+        ));
     }
 }
