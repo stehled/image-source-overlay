@@ -4,7 +4,7 @@
  * Plugin URI:
  * Text Domain: image-source-overlay
  * Description: Adds overlay with image sources.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Eduard Stehlík
  * Author URI: http://stehled.com
  * License: GPLv3
@@ -13,7 +13,7 @@
 define('IMAGE_SO__PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('IMAGE_SO__BASE', plugin_basename(__FILE__));
 define('IMAGE_SO__PLUGIN_URL', plugins_url('',__FILE__));
-define('IMAGE_SO__VERSION_NUMBER', '1.1.0');
+define('IMAGE_SO__VERSION_NUMBER', '1.1.1');
 
 register_activation_hook( __FILE__, array('Image_SO\Inc\Core\Image_SO_Activator', 'activate'));
 
