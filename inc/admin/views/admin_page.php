@@ -1,11 +1,3 @@
-<?php
-/*
-Projekt: viviwp
-Soubor: admin_page.php
-Uživatel: eda
-Datum: 09.09.2022
-*/
-?>
 <div class="wrap">
     <h1 class="wp-heading-inline"><?php _e('Image Source Overlay Settings', 'image-source-overlay'); ?></h1>
     <div class="image_so_admin_form">
