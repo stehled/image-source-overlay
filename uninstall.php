@@ -1,10 +1,4 @@
 <?php
-/*
-Projekt: image_so
-Soubor: uninstall.php
-Uživatel: eda
-Datum: 13.09.2022
-*/
 
 if (!defined('WP_UNINSTALL_PLUGIN')) {
     exit();

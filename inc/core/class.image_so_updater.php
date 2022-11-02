@@ -1,10 +1,5 @@
 <?php
-/*
-Projekt: image-source-overlay
-Soubor: class.image_so_updater.php
-Uživatel: eda
-Datum: 21.09.2022
-*/
+
 namespace Image_SO\Inc\Core;
 
 final class Image_SO_Updater extends Image_SO_Base

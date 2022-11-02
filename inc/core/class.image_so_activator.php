@@ -1,10 +1,5 @@
 <?php
-/*
-Projekt: image_so
-Soubor: class.image_so_activator.php
-Uživatel: eda
-Datum: 13.09.2022
-*/
+
 namespace Image_SO\Inc\Core;
 
 /**

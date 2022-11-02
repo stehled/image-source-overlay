@@ -3,13 +3,13 @@ Contributors: stehled
 Donate link: https://www.paypal.com/donate/?hosted_button_id=D4CRBYJHGDUQY
 Tags: captions, copyright, images, source, credits
 Requires at least: 4.6
-Tested up to: 6.0.2
+Tested up to: 6.1
 Stable tag: 1.1.0
 Requires PHP: 5.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-With Image Source Overlay you can manage imag sources in media library. Plugin will then generate small overlay for every image crediting the original author.
+With Image Source Overlay you can manage image sources in media library. Plugin will then generate small overlay for every image crediting the original author.
 
 == Description ==
 
